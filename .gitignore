@@ -19,7 +19,7 @@ venv/
 .coverage
 htmlcov/
 uploads/
-storage/
+/storage/
 *.log
 .DS_Store
 node_modules/
