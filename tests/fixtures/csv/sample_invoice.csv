@@ -1,0 +1,10 @@
+Item,Description,Quantity,Unit Price,Amount
+WDG-001,Standard Widget,150,12.50,1875.00
+WDG-002,Premium Widget,75,24.99,1874.25
+SVC-010,Installation Service,10,150.00,1500.00
+SVC-011,Annual Maintenance Contract,5,499.00,2495.00
+ACC-005,Widget Mounting Bracket,200,3.75,750.00
+,,,,
+,,,Subtotal,8494.25
+,,,Tax (8.5%),721.01
+,,,Total,9215.26
