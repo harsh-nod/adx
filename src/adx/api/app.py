@@ -174,6 +174,44 @@ async def search_corpus(body: CorpusSearchRequest) -> JSONResponse:
     return JSONResponse(content={"query": body.query, "results": hits, "total": len(hits)})
 
 
+class ChunkRequest(BaseModel):
+    strategy: str = "section_aware"
+    max_chunk_size: int = 1000
+    overlap: int = 200
+
+
+@app.post("/v1/files/{file_id}/chunks", tags=["chunking"])
+async def chunk_document(file_id: str, body: ChunkRequest) -> JSONResponse:
+    """Chunk a document for retrieval."""
+    client = get_client()
+    try:
+        chunks = client.chunk(
+            file_id,
+            strategy=body.strategy,
+            max_chunk_size=body.max_chunk_size,
+            overlap=body.overlap,
+        )
+        return JSONResponse(content={
+            "file_id": file_id,
+            "chunk_count": len(chunks),
+            "chunks": [
+                {
+                    "id": c.id,
+                    "text": c.text,
+                    "chunk_type": c.chunk_type,
+                    "section_path": c.section_path,
+                    "page_numbers": c.page_numbers,
+                    "sheet_name": c.sheet_name,
+                    "token_count": c.token_count,
+                    "citations": [ci.model_dump() for ci in c.citations],
+                }
+                for c in chunks
+            ],
+        })
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+
 @app.get("/v1/files/{file_id}/markdown", tags=["files"])
 async def get_markdown(file_id: str) -> JSONResponse:
     """Export document as markdown."""

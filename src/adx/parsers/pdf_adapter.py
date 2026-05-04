@@ -66,16 +66,19 @@ class PyMuPDFAdapter(ParserAdapter):
             "page_count": len(doc),
         }
 
+        cumulative_byte_offset = 0
         for page_idx in range(len(doc)):
             page = doc[page_idx]
-            page_data = self._extract_page(page, page_idx + 1, result)
+            page_data = self._extract_page(page, page_idx + 1, result, cumulative_byte_offset)
             result.pages.append(page_data)
+            cumulative_byte_offset = page_data.get("_byte_offset_end", cumulative_byte_offset)
 
         doc.close()
         return result
 
     def _extract_page(
-        self, page: Any, page_number: int, result: ParserResult
+        self, page: Any, page_number: int, result: ParserResult,
+        byte_offset: int = 0,
     ) -> dict[str, Any]:
         page_data: dict[str, Any] = {
             "page_number": page_number,
@@ -89,6 +92,7 @@ class PyMuPDFAdapter(ParserAdapter):
         }
 
         # Extract text blocks using "dict" mode for layout info
+        cumulative_offset = byte_offset
         try:
             blocks = page.get_text("dict", flags=11)["blocks"]
             reading_order = 0
@@ -107,6 +111,10 @@ class PyMuPDFAdapter(ParserAdapter):
                     block_type = self._classify_block(text, bbox, page)
                     font_size = self._get_dominant_font_size(block)
 
+                    byte_start = cumulative_offset
+                    byte_end = cumulative_offset + len(text.encode("utf-8"))
+                    cumulative_offset = byte_end + 1  # +1 for separator
+
                     tb_data = {
                         "page_number": page_number,
                         "text": text,
@@ -120,6 +128,8 @@ class PyMuPDFAdapter(ParserAdapter):
                         "reading_order_index": reading_order,
                         "font_size": font_size,
                         "confidence": 1.0,
+                        "byte_offset_start": byte_start,
+                        "byte_offset_end": byte_end,
                     }
                     page_data["text_blocks"].append(tb_data)
                     result.text_blocks.append(tb_data)
@@ -146,6 +156,9 @@ class PyMuPDFAdapter(ParserAdapter):
                     page=page_number,
                 )
             )
+
+        # Track cumulative byte offset for provenance across pages
+        page_data["_byte_offset_end"] = cumulative_offset
 
         # Check if page has very little text (might be scanned)
         total_text = " ".join(tb["text"] for tb in page_data["text_blocks"])

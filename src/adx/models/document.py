@@ -292,6 +292,8 @@ class Citation(BaseModel):
     cell_range: str | None = None
     text_snippet: str | None = None
     confidence: float = 1.0
+    source_byte_start: int | None = None
+    source_byte_end: int | None = None
 
     def to_short_ref(self) -> str:
         parts: list[str] = []
@@ -303,6 +305,8 @@ class Citation(BaseModel):
             parts.append(f"cell {self.cell_address}")
         if self.cell_range:
             parts.append(f"range {self.cell_range}")
+        if self.source_byte_start is not None and self.source_byte_end is not None:
+            parts.append(f"bytes {self.source_byte_start}-{self.source_byte_end}")
         return ", ".join(parts) if parts else "unknown location"
 
 

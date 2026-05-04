@@ -146,6 +146,8 @@ class GraphBuilder:
                     page_number=page.page_number,
                     bounding_box=bbox,
                     text_snippet=tb.text[:200],
+                    source_byte_start=tb_data.get("byte_offset_start"),
+                    source_byte_end=tb_data.get("byte_offset_end"),
                 )
                 graph.citations.append(citation)
 

@@ -207,6 +207,27 @@ class ADX:
         all_hits.sort(key=lambda h: h["score"], reverse=True)
         return all_hits[:max_results]
 
+    def chunk(
+        self,
+        file_id: str,
+        strategy: str = "section_aware",
+        max_chunk_size: int = 1000,
+        overlap: int = 200,
+    ) -> list[Any]:
+        """Chunk a document for retrieval pipelines."""
+        from adx.chunking import ChunkingConfig, chunk_document
+
+        graph = self.store.load_graph(file_id)
+        if graph is None:
+            raise ValueError(f"File {file_id} not found. Upload and process it first.")
+
+        config = ChunkingConfig(
+            strategy=strategy,
+            max_chunk_size=max_chunk_size,
+            overlap=overlap,
+        )
+        return chunk_document(graph, config)
+
     # ------------------------------------------------------------------
     # Inspection tools
     # ------------------------------------------------------------------

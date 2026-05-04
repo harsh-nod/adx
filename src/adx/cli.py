@@ -289,6 +289,30 @@ def search_all(ctx: click.Context, query: str, max_results: int) -> None:
 
 @cli.command()
 @click.argument("file_id")
+@click.option("--strategy", "-s", default="section_aware", help="Chunking strategy.")
+@click.option("--max-size", default=1000, help="Max tokens per chunk.")
+@click.pass_context
+def chunk(ctx: click.Context, file_id: str, strategy: str, max_size: int) -> None:
+    """Chunk a document for retrieval."""
+    client = _client(ctx.obj.get("storage_dir"))
+    try:
+        chunks = client.chunk(file_id, strategy=strategy, max_chunk_size=max_size)
+    except ValueError as e:
+        console.print(f"[red]{e}[/red]")
+        sys.exit(1)
+
+    console.print(f"[green]{len(chunks)} chunks generated[/green]\n")
+    for i, c in enumerate(chunks, 1):
+        loc = ", ".join(f"p{p}" for p in c.page_numbers) if c.page_numbers else c.sheet_name or "—"
+        console.print(f"[bold]Chunk {i}[/bold] ({c.chunk_type}, ~{c.token_count} tokens, {loc})")
+        console.print(f"  {c.text[:120]}{'...' if len(c.text) > 120 else ''}")
+        if c.section_path:
+            console.print(f"  [dim]Section: {' > '.join(c.section_path)}[/dim]")
+        console.print()
+
+
+@cli.command()
+@click.argument("file_id")
 @click.pass_context
 def markdown(ctx: click.Context, file_id: str) -> None:
     """Export document as markdown."""
