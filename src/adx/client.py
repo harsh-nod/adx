@@ -107,6 +107,13 @@ class ADX:
         """List all processed file IDs."""
         return self.store.list_graphs()
 
+    def to_markdown(self, file_id: str) -> str:
+        """Render a document graph as markdown."""
+        graph = self.store.load_graph(file_id)
+        if graph is None:
+            raise ValueError(f"File {file_id} not found. Upload and process it first.")
+        return graph.to_markdown()
+
     # ------------------------------------------------------------------
     # Inspection tools
     # ------------------------------------------------------------------

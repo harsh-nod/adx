@@ -2,6 +2,7 @@
 
 from adx.parsers.base import ParserAdapter, ParserCapabilities, ParserResult
 from adx.parsers.docx_adapter import DocxAdapter
+from adx.parsers.pptx_adapter import PptxAdapter
 from adx.parsers.registry import ParserRegistry
 from adx.parsers.rtf_adapter import RTFAdapter
 
@@ -11,5 +12,6 @@ __all__ = [
     "ParserResult",
     "ParserRegistry",
     "DocxAdapter",
+    "PptxAdapter",
     "RTFAdapter",
 ]

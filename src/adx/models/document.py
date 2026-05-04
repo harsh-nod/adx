@@ -33,6 +33,7 @@ class FileType(str, Enum):
     XLS = "xls"
     CSV = "csv"
     DOCX = "docx"
+    PPTX = "pptx"
     RTF = "rtf"
     IMAGE = "image"
     TEXT = "text"
@@ -438,6 +439,56 @@ class DocumentGraph(BaseModel):
                 if query_lower in block.text.lower():
                     results.append((block, page.page_number))
         return results
+
+    def to_markdown(self) -> str:
+        """Render the document graph as markdown."""
+        lines: list[str] = []
+
+        # Title from document filename
+        lines.append(f"# {self.document.filename}\n")
+
+        # Render pages (PDF, DOCX, PPTX, RTF)
+        for page in sorted(self.pages, key=lambda p: p.page_number):
+            sorted_blocks = sorted(page.text_blocks, key=lambda b: b.reading_order_index)
+            for block in sorted_blocks:
+                if block.block_type == TextBlockType.HEADING:
+                    # Determine heading level from sections
+                    level = self._heading_level_for_block(block)
+                    lines.append(f"\n{'#' * (level + 1)} {block.text}\n")
+                elif block.block_type == TextBlockType.LIST_ITEM:
+                    lines.append(f"- {block.text}")
+                elif block.block_type == TextBlockType.FOOTNOTE:
+                    lines.append(f"\n> *{block.text}*\n")
+                elif block.block_type in (TextBlockType.HEADER, TextBlockType.FOOTER, TextBlockType.PAGE_NUMBER):
+                    continue
+                else:
+                    lines.append(block.text)
+
+            for table in page.tables:
+                md = table.to_markdown()
+                if md:
+                    lines.append("")
+                    lines.append(md)
+                    lines.append("")
+
+        # Render workbook sheets
+        if self.workbook:
+            for sheet in self.workbook.sheets:
+                lines.append(f"\n## Sheet: {sheet.name}\n")
+                for table in sheet.tables:
+                    md = table.to_markdown()
+                    if md:
+                        lines.append(md)
+                        lines.append("")
+
+        return "\n".join(lines)
+
+    def _heading_level_for_block(self, block: TextBlock) -> int:
+        """Find the heading level from sections, or default to 2."""
+        for section in self.sections:
+            if block.text.strip() == section.title:
+                return section.heading_level
+        return 2
 
     def search_cells(self, query: str) -> list[SpreadsheetCell]:
         """Search spreadsheet cell values."""

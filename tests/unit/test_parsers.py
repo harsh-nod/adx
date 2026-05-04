@@ -353,7 +353,7 @@ class TestParserRegistryAdapters:
 class TestExtensionMap:
     def test_all_known_extensions(self):
         expected = {
-            ".pdf", ".xlsx", ".xls", ".csv", ".docx", ".rtf", ".txt",
+            ".pdf", ".xlsx", ".xls", ".csv", ".docx", ".pptx", ".rtf", ".txt",
             ".png", ".jpg", ".jpeg", ".tiff", ".tif",
         }
         assert set(EXTENSION_MAP.keys()) == expected

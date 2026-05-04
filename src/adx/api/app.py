@@ -133,6 +133,17 @@ async def list_files() -> JSONResponse:
     return JSONResponse(content={"files": files})
 
 
+@app.get("/v1/files/{file_id}/markdown", tags=["files"])
+async def get_markdown(file_id: str) -> JSONResponse:
+    """Export document as markdown."""
+    client = get_client()
+    try:
+        md = client.to_markdown(file_id)
+        return JSONResponse(content={"file_id": file_id, "markdown": md})
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+
 # ---------------------------------------------------------------------------
 # Inspection endpoints
 # ---------------------------------------------------------------------------

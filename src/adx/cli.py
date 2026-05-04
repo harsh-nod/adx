@@ -230,6 +230,20 @@ def sheets(ctx: click.Context, file_id: str) -> None:
 
 
 @cli.command()
+@click.argument("file_id")
+@click.pass_context
+def markdown(ctx: click.Context, file_id: str) -> None:
+    """Export document as markdown."""
+    client = _client(ctx.obj.get("storage_dir"))
+    try:
+        md = client.to_markdown(file_id)
+    except ValueError as e:
+        console.print(f"[red]{e}[/red]")
+        sys.exit(1)
+    console.print(md)
+
+
+@cli.command()
 def serve() -> None:
     """Start the ADX API server."""
     import uvicorn

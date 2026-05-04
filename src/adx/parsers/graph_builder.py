@@ -75,7 +75,7 @@ class GraphBuilder:
 
         graph = DocumentGraph(document=doc)
 
-        if result.file_type in (FileType.PDF, FileType.DOCX, FileType.RTF):
+        if result.file_type in (FileType.PDF, FileType.DOCX, FileType.RTF, FileType.PPTX):
             self._build_pdf_graph(result, graph)
         elif result.file_type in (FileType.XLSX, FileType.XLS):
             self._build_excel_graph(result, graph)
@@ -300,7 +300,9 @@ class GraphBuilder:
 
         text_lower = all_text.lower()
 
-        if result.file_type in (FileType.XLSX, FileType.XLS):
+        if result.file_type == FileType.PPTX:
+            types.append(DocumentType.PRESENTATION)
+        elif result.file_type in (FileType.XLSX, FileType.XLS):
             types.append(DocumentType.SPREADSHEET)
             if any(
                 kw in text_lower
@@ -400,6 +402,7 @@ def _guess_mime(ft: FileType) -> str:
         FileType.XLS: "application/vnd.ms-excel",
         FileType.CSV: "text/csv",
         FileType.DOCX: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        FileType.PPTX: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
         FileType.RTF: "application/rtf",
         FileType.TEXT: "text/plain",
         FileType.IMAGE: "image/png",

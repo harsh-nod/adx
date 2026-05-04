@@ -11,6 +11,7 @@ from adx.parsers.csv_adapter import CSVAdapter
 from adx.parsers.docx_adapter import DocxAdapter
 from adx.parsers.excel_adapter import OpenpyxlAdapter
 from adx.parsers.pdf_adapter import PyMuPDFAdapter
+from adx.parsers.pptx_adapter import PptxAdapter
 from adx.parsers.rtf_adapter import RTFAdapter
 
 logger = logging.getLogger(__name__)
@@ -21,6 +22,7 @@ EXTENSION_MAP: dict[str, FileType] = {
     ".xls": FileType.XLS,
     ".csv": FileType.CSV,
     ".docx": FileType.DOCX,
+    ".pptx": FileType.PPTX,
     ".rtf": FileType.RTF,
     ".txt": FileType.TEXT,
     ".png": FileType.IMAGE,
@@ -40,6 +42,7 @@ class ParserRegistry:
             OpenpyxlAdapter(),
             CSVAdapter(),
             DocxAdapter(),
+            PptxAdapter(),
             RTFAdapter(),
         ]
 
