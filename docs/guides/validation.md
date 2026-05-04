@@ -4,14 +4,14 @@ title: Validation
 
 # Validation
 
-DocuNav validates extractions with rule-based checks. Validation catches missing fields, type errors, arithmetic inconsistencies, and missing citations.
+ADX validates extractions with rule-based checks. Validation catches missing fields, type errors, arithmetic inconsistencies, and missing citations.
 
 ## Running Validation
 
 ```python
-from docunav import DocuNav
+from adx import ADX
 
-dn = DocuNav()
+dn = ADX()
 doc_id = dn.upload("invoice.pdf")
 extraction = dn.extract(doc_id, schema="invoice")
 result = dn.validate(doc_id, extraction["id"])
@@ -64,7 +64,7 @@ Flags fields with confidence below the threshold (default: 0.5).
 
 ### Arithmetic Validation (Invoice-Specific)
 
-For invoice schemas, DocuNav verifies that `subtotal + tax = total`:
+For invoice schemas, ADX verifies that `subtotal + tax = total`:
 
 ```json
 {"severity": "error", "rule": "arithmetic",
@@ -92,5 +92,5 @@ curl -X POST http://localhost:8000/v1/files/{id}/validate \
 ## CLI
 
 ```bash
-docunav validate <doc_id> --extraction <extraction_id>
+adx validate <doc_id> --extraction <extraction_id>
 ```

@@ -4,23 +4,23 @@ title: MCP Tools
 
 # MCP Tools
 
-DocuNav tools are designed to be exposed as MCP (Model Context Protocol) tools, making them available to any MCP-compatible AI agent.
+ADX tools are designed to be exposed as MCP (Model Context Protocol) tools, making them available to any MCP-compatible AI agent.
 
 ## Planned MCP Tools
 
 | Tool | Description |
 |---|---|
-| `docunav.profile` | Profile a document — metadata, type, recommended tools |
-| `docunav.structure` | List sections, tables, and page outline |
-| `docunav.search` | Full-text search with citations |
-| `docunav.get_page` | Read a specific page's content |
-| `docunav.get_table` | Read a specific table |
-| `docunav.list_sheets` | List spreadsheet sheets |
-| `docunav.read_range` | Read a cell range |
-| `docunav.find_cells` | Search cells by value |
-| `docunav.inspect_formula` | Trace formula dependencies |
-| `docunav.extract` | Extract fields with a schema |
-| `docunav.validate` | Validate an extraction |
+| `adx.profile` | Profile a document — metadata, type, recommended tools |
+| `adx.structure` | List sections, tables, and page outline |
+| `adx.search` | Full-text search with citations |
+| `adx.get_page` | Read a specific page's content |
+| `adx.get_table` | Read a specific table |
+| `adx.list_sheets` | List spreadsheet sheets |
+| `adx.read_range` | Read a cell range |
+| `adx.find_cells` | Search cells by value |
+| `adx.inspect_formula` | Trace formula dependencies |
+| `adx.extract` | Extract fields with a schema |
+| `adx.validate` | Validate an extraction |
 
 ## MCP Server Configuration
 
@@ -31,8 +31,8 @@ Example future configuration:
 ```json
 {
   "mcpServers": {
-    "docunav": {
-      "command": "docunav",
+    "adx": {
+      "command": "adx",
       "args": ["mcp"]
     }
   }
@@ -43,6 +43,6 @@ Example future configuration:
 
 Until MCP support ships, agents can use:
 
-- **Python SDK** — direct function calls via `from docunav import DocuNav`
-- **REST API** — HTTP endpoints via `docunav serve`
+- **Python SDK** — direct function calls via `from adx import ADX`
+- **REST API** — HTTP endpoints via `adx serve`
 - **CLI** — shell commands for scripting

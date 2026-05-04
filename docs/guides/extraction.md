@@ -4,7 +4,7 @@ title: Extraction
 
 # Schema-Driven Extraction
 
-DocuNav extracts structured fields from documents using predefined schemas. Every extracted field includes a confidence score and citation back to the source.
+ADX extracts structured fields from documents using predefined schemas. Every extracted field includes a confidence score and citation back to the source.
 
 ## Built-in Schemas
 
@@ -18,9 +18,9 @@ DocuNav extracts structured fields from documents using predefined schemas. Ever
 ## Using a Schema
 
 ```python
-from docunav import DocuNav
+from adx import ADX
 
-dn = DocuNav()
+dn = ADX()
 doc_id = dn.upload("invoice.pdf")
 
 # Extract with a built-in schema
@@ -35,7 +35,7 @@ for field in extraction["fields"]:
 
 ## Auto-Detection
 
-If no schema is specified, DocuNav uses the document type detected during profiling:
+If no schema is specified, ADX uses the document type detected during profiling:
 
 ```python
 # Auto-detects schema from document type

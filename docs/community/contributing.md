@@ -32,7 +32,7 @@ Contributions are welcome. Here are areas where help is most useful:
 ## Architecture
 
 ```
-src/docunav/
+src/adx/
   models/       ← Pydantic document model
   parsers/      ← Parser adapters (PyMuPDF, openpyxl, csv)
   tools/        ← Agent inspection tools

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from docunav.extraction.extractor import Extractor
-from docunav.extraction.schemas import (
+from adx.extraction.extractor import Extractor
+from adx.extraction.schemas import (
     CONTRACT_SCHEMA,
     ExtractionSchema,
     FINANCIAL_MODEL_SCHEMA,
@@ -14,8 +14,8 @@ from docunav.extraction.schemas import (
     SchemaRegistry,
     TABLE_SCHEMA,
 )
-from docunav.extraction.validator import Validator
-from docunav.models.document import (
+from adx.extraction.validator import Validator
+from adx.models.document import (
     Citation,
     CitationType,
     Document,

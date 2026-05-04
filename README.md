@@ -1,10 +1,10 @@
-# DocuNav
+# ADX
 
 Agent-native document intelligence layer. Wraps best-in-class document parsers and exposes structured, citeable, inspectable document state to AI agents.
 
 ## What It Does
 
-DocuNav is **not** a parser. It is an orchestration layer that:
+ADX is **not** a parser. It is an orchestration layer that:
 
 1. **Wraps** parsers (PyMuPDF, openpyxl, csv) behind a uniform interface
 2. **Builds** a canonical `DocumentGraph` from any supported format
@@ -15,15 +15,15 @@ DocuNav is **not** a parser. It is an orchestration layer that:
 ## Install
 
 ```bash
-pip install docunav
+pip install adx
 ```
 
 ## Quick Start
 
 ```python
-from docunav import DocuNav
+from adx import ADX
 
-dn = DocuNav()
+dn = ADX()
 doc_id = dn.upload("invoice.pdf")
 
 # Profile the document
@@ -60,7 +60,7 @@ result = dn.validate(doc_id, extraction["id"])
 ## REST API
 
 ```bash
-docunav serve
+adx serve
 curl -X POST http://localhost:8000/v1/files -F "file=@invoice.pdf"
 curl http://localhost:8000/v1/files/{id}/profile
 ```
@@ -68,10 +68,10 @@ curl http://localhost:8000/v1/files/{id}/profile
 ## CLI
 
 ```bash
-docunav upload invoice.pdf
-docunav profile <id>
-docunav extract <id> --schema invoice
-docunav validate <id> --extraction <eid>
+adx upload invoice.pdf
+adx profile <id>
+adx extract <id> --schema invoice
+adx validate <id> --extraction <eid>
 ```
 
 ## Supported Formats
@@ -80,6 +80,8 @@ docunav validate <id> --extraction <eid>
 |---|---|---|
 | PDF | PyMuPDF | Text blocks, tables, bounding boxes, sections |
 | Excel (.xlsx) | openpyxl | Sheets, formulas, hidden content, named ranges |
+| DOCX | python-docx | Paragraphs, headings, tables, images, metadata |
+| RTF | striprtf | Text extraction with formatting stripped |
 | CSV | stdlib | Dialect sniffing, encoding detection |
 
 ## Documentation

@@ -4,7 +4,7 @@ title: Citations
 
 # Citations
 
-Every value DocuNav returns traces back to a specific location in the source document. Citations are the provenance layer that lets agents (and humans) verify extracted data.
+Every value ADX returns traces back to a specific location in the source document. Citations are the provenance layer that lets agents (and humans) verify extracted data.
 
 ## Citation Types
 

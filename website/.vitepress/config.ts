@@ -11,13 +11,13 @@ export default defineConfig({
     },
   },
   base: "/adx/",
-  title: "DocuNav",
+  title: "ADX",
   description: "Agent-native document intelligence layer.",
   lang: "en-US",
   appearance: true,
   themeConfig: {
     logo: {
-      text: "DocuNav"
+      text: "ADX"
     },
     nav: [
       { text: "Quickstart", link: "/quickstart/" },
@@ -81,7 +81,7 @@ export default defineConfig({
     ],
     footer: {
       message: "Documents are not text blobs. Give your agents document tools.",
-      copyright: "© " + new Date().getFullYear() + " DocuNav contributors."
+      copyright: "© " + new Date().getFullYear() + " ADX contributors."
     }
   },
   head: [

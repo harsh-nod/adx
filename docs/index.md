@@ -1,11 +1,11 @@
 ---
-title: DocuNav Overview
+title: ADX Overview
 ---
 
 <div class="hero-intro">
-  <h1>Agent-Native Document Intelligence</h1>
+  <h1>Agentic Data Layer</h1>
   <p class="hero-tagline">
-    Profile. Inspect. Extract. Validate. Cite.<br>Structured document tools for AI agents.
+    Profile. Inspect. Extract. Validate. Cite.<br>ADX gives your AI agents structured document tools.
   </p>
   <p class="hero-subtitle"><em>Documents are not text blobs. Give your agents document tools.</em></p>
   <div class="hero-actions">
@@ -29,7 +29,7 @@ title: DocuNav Overview
   <div class="pipeline-node">cite</div>
 </div>
 
-Upload any document. DocuNav wraps best-in-class parsers and exposes a canonical, citeable, inspectable document model to your agents.
+Upload any document. ADX wraps best-in-class parsers and exposes a canonical, citeable, inspectable document model to your agents.
 
 <div class="arch-diagram">
 <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg">
@@ -49,10 +49,10 @@ Upload any document. DocuNav wraps best-in-class parsers and exposes a canonical
   <!-- Arrows -->
   <line class="arch-arrow" x1="150" y1="72" x2="230" y2="72"/>
   <line class="arch-arrow-back" x1="230" y1="98" x2="150" y2="98"/>
-  <!-- DocuNav box -->
+  <!-- ADX box -->
   <g class="proxy-group">
     <rect class="arch-box-accent" x="230" y="20" width="220" height="150"/>
-    <text class="arch-label" x="340" y="48" text-anchor="middle">DocuNav</text>
+    <text class="arch-label" x="340" y="48" text-anchor="middle">ADX</text>
     <rect class="arch-box" x="250" y="58" width="180" height="100"/>
     <text class="arch-sublabel" x="268" y="78">profile_document</text>
     <text class="arch-sublabel" x="268" y="94">search_document</text>
@@ -73,7 +73,7 @@ Upload any document. DocuNav wraps best-in-class parsers and exposes a canonical
 
 <div class="demo-grid">
 <div class="demo-panel demo-danger">
-<h4>Without DocuNav</h4>
+<h4>Without ADX</h4>
 
 ```
 Agent: reads invoice.pdf as raw text
@@ -86,11 +86,11 @@ Agent: no way to verify the answer
 Raw text dumps lose structure, tables, and provenance. The agent hallucinates fields it cannot cite.
 </div>
 <div class="demo-panel demo-safe">
-<h4>With DocuNav</h4>
+<h4>With ADX</h4>
 
 ```python
-from docunav import DocuNav
-dn = DocuNav()
+from adx import ADX
+dn = ADX()
 doc_id = dn.upload("invoice.pdf")
 profile = dn.profile(doc_id)
 extraction = dn.extract(doc_id, schema="invoice")
@@ -107,9 +107,9 @@ Every field is extracted with a citation. Every value is validated.
 </div>
 </div>
 
-## What DocuNav Does
+## What ADX Does
 
-DocuNav is **not** a parser. It is an orchestration layer that:
+ADX is **not** a parser. It is an orchestration layer that:
 
 1. **Wraps** best-in-class parsers (PyMuPDF, openpyxl, csv) behind a uniform interface
 2. **Builds** a canonical `DocumentGraph` from any supported file format
@@ -120,10 +120,10 @@ DocuNav is **not** a parser. It is an orchestration layer that:
 ## Quick Start
 
 ```bash
-pip install docunav
+pip install adx
 
 # Start the server
-docunav serve
+adx serve
 
 # Upload and profile a document
 curl -X POST http://localhost:8000/v1/files -F "file=@invoice.pdf"
@@ -133,9 +133,9 @@ curl http://localhost:8000/v1/files/{id}/profile
 Or use the Python SDK directly:
 
 ```python
-from docunav import DocuNav
+from adx import ADX
 
-dn = DocuNav()
+dn = ADX()
 doc_id = dn.upload("invoice.pdf")
 print(dn.profile(doc_id))
 print(dn.structure(doc_id))
@@ -190,9 +190,9 @@ Nine read-only, deterministic tools that return structured JSON:
     <p>Upload, inspect, extract, and validate documents with a single client object.</p>
 
 ```python
-from docunav import DocuNav
+from adx import ADX
 
-dn = DocuNav()
+dn = ADX()
 doc_id = dn.upload("report.pdf")
 profile = dn.profile(doc_id)
 tables = dn.structure(doc_id)["tables"]
@@ -201,7 +201,7 @@ data = dn.get_table(doc_id, tables[0]["id"])
   </div>
   <div>
     <h3>REST API</h3>
-    <p>Full HTTP API for language-agnostic integration. Start with <code>docunav serve</code>.</p>
+    <p>Full HTTP API for language-agnostic integration. Start with <code>adx serve</code>.</p>
 
 ```bash
 # Upload
@@ -218,11 +218,11 @@ curl -X POST localhost:8000/v1/files/{id}/extract \
     <p>Command-line tools for scripting and CI pipelines.</p>
 
 ```bash
-docunav upload invoice.pdf
-docunav profile <id>
-docunav extract <id> --schema invoice
-docunav validate <id> --extraction <eid>
-docunav export <id> --format markdown
+adx upload invoice.pdf
+adx profile <id>
+adx extract <id> --schema invoice
+adx validate <id> --extraction <eid>
+adx export <id> --format markdown
 ```
   </div>
 </div>
@@ -233,6 +233,8 @@ docunav export <id> --format markdown
 |---|---|---|
 | PDF | PyMuPDF | Text blocks, tables, bounding boxes, section detection |
 | Excel (.xlsx) | openpyxl | Sheets, formulas, named ranges, hidden cells, merged cells |
+| DOCX | python-docx | Paragraphs, headings, tables, images, metadata |
+| RTF | striprtf | Text extraction with formatting stripped |
 | CSV | stdlib csv | Dialect sniffing, encoding detection, header inference |
 
 ## Learn More

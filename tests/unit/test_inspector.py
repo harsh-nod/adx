@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from docunav.models.document import (
+from adx.models.document import (
     Document,
     DocumentGraph,
     DocumentType,
@@ -21,7 +21,7 @@ from docunav.models.document import (
     TextBlockType,
     Workbook,
 )
-from docunav.tools.inspector import (
+from adx.tools.inspector import (
     DocumentInspector,
     _cell_in_range,
     _is_hidden_cell,

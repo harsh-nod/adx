@@ -5,7 +5,7 @@ const { Layout } = DefaultTheme;
 
 <template>
   <div class="pre-release-banner">
-    Alpha release. Install with <code>pip install docunav</code>. APIs may change before v1.0.
+    Alpha release. Install with <code>pip install adx</code>. APIs may change before v1.0.
     <a href="/adx/community/roadmap">Roadmap &rarr;</a>
   </div>
   <Layout />

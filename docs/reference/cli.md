@@ -5,96 +5,96 @@ title: CLI Reference
 # CLI Reference
 
 ```bash
-pip install docunav
+pip install adx
 ```
 
 ## Commands
 
-### docunav upload
+### adx upload
 
 Upload a document.
 
 ```bash
-docunav upload invoice.pdf
-docunav upload model.xlsx
-docunav upload data.csv
+adx upload invoice.pdf
+adx upload model.xlsx
+adx upload data.csv
 ```
 
-### docunav files
+### adx files
 
 List uploaded documents.
 
 ```bash
-docunav files
+adx files
 ```
 
-### docunav profile
+### adx profile
 
 Profile a document.
 
 ```bash
-docunav profile <doc_id>
+adx profile <doc_id>
 ```
 
-### docunav structure
+### adx structure
 
 Show document structure.
 
 ```bash
-docunav structure <doc_id>
+adx structure <doc_id>
 ```
 
-### docunav search
+### adx search
 
 Search a document.
 
 ```bash
-docunav search <doc_id> --query "payment terms"
+adx search <doc_id> --query "payment terms"
 ```
 
-### docunav sheets
+### adx sheets
 
 List spreadsheet sheets.
 
 ```bash
-docunav sheets <doc_id>
+adx sheets <doc_id>
 ```
 
-### docunav extract
+### adx extract
 
 Extract fields with a schema.
 
 ```bash
-docunav extract <doc_id> --schema invoice
-docunav extract <doc_id> --schema contract
-docunav extract <doc_id> --schema financial_model
+adx extract <doc_id> --schema invoice
+adx extract <doc_id> --schema contract
+adx extract <doc_id> --schema financial_model
 ```
 
-### docunav validate
+### adx validate
 
 Validate an extraction.
 
 ```bash
-docunav validate <doc_id> --extraction <extraction_id>
+adx validate <doc_id> --extraction <extraction_id>
 ```
 
-### docunav export
+### adx export
 
 Export document content.
 
 ```bash
-docunav export <doc_id> --format json
-docunav export <doc_id> --format markdown
-docunav export <doc_id> --format csv
+adx export <doc_id> --format json
+adx export <doc_id> --format markdown
+adx export <doc_id> --format csv
 ```
 
-### docunav serve
+### adx serve
 
 Start the REST API server.
 
 ```bash
-docunav serve
-docunav serve --host 0.0.0.0 --port 9000
+adx serve
+adx serve --host 0.0.0.0 --port 9000
 ```
 
 Default: `http://localhost:8000`

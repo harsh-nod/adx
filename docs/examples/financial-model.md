@@ -9,9 +9,9 @@ This example inspects an Excel financial model: navigating sheets, reading range
 ## Upload
 
 ```python
-from docunav import DocuNav
+from adx import ADX
 
-dn = DocuNav()
+dn = ADX()
 doc_id = dn.upload("model.xlsx")
 ```
 

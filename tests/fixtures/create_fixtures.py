@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate Excel (.xlsx) test fixture files for the DocuNav project.
+Generate Excel (.xlsx) test fixture files for the ADX project.
 
 Creates:
   - excel/sample_model.xlsx  -- multi-sheet financial model with formulas,

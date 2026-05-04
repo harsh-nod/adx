@@ -4,19 +4,19 @@ title: Python SDK
 
 # Python SDK Reference
 
-## DocuNav Client
+## ADX Client
 
 ```python
-from docunav import DocuNav
+from adx import ADX
 
-dn = DocuNav(storage_dir="~/.docunav")
+dn = ADX(storage_dir="~/.adx")
 ```
 
 ### Constructor
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `storage_dir` | `str` | `~/.docunav` | Directory for file and graph storage |
+| `storage_dir` | `str` | `~/.adx` | Directory for file and graph storage |
 
 ## File Operations
 

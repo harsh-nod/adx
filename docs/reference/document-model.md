@@ -4,7 +4,7 @@ title: Document Model
 
 # Document Model
 
-DocuNav's canonical document model is a parser-agnostic representation called `DocumentGraph`. Every supported file format is normalized into this model.
+ADX's canonical document model is a parser-agnostic representation called `DocumentGraph`. Every supported file format is normalized into this model.
 
 ## Schema Version
 

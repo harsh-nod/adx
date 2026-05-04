@@ -4,7 +4,7 @@ title: Agent Tools
 
 # Agent Tools
 
-DocuNav exposes nine read-only, deterministic tools designed for AI agent consumption. Every tool returns structured JSON with citations.
+ADX exposes nine read-only, deterministic tools designed for AI agent consumption. Every tool returns structured JSON with citations.
 
 ## Design Principles
 

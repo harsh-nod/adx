@@ -4,7 +4,7 @@ title: Examples
 
 # Examples
 
-Real-world document processing workflows using DocuNav.
+Real-world document processing workflows using ADX.
 
 <div class="landing-grid">
   <article class="card">
@@ -26,9 +26,9 @@ Real-world document processing workflows using DocuNav.
 ### Upload and Profile
 
 ```python
-from docunav import DocuNav
+from adx import ADX
 
-dn = DocuNav()
+dn = ADX()
 doc_id = dn.upload("document.pdf")
 profile = dn.profile(doc_id)
 print(f"Type: {profile['document_type']}, Tables: {profile['table_count']}")

@@ -4,7 +4,7 @@ title: PDF Processing
 
 # PDF Processing
 
-DocuNav uses PyMuPDF (fitz) to parse PDFs into structured `DocumentGraph` objects. This guide covers PDF-specific features.
+ADX uses PyMuPDF (fitz) to parse PDFs into structured `DocumentGraph` objects. This guide covers PDF-specific features.
 
 ## What Gets Extracted
 
@@ -37,9 +37,9 @@ PyMuPDF's `find_tables()` extracts tabular data with cell boundaries. Tables are
 
 ## Scanned PDF Detection
 
-DocuNav warns when a page appears to be scanned (image-based) rather than text-based. Pages with fewer than 20 characters of extracted text trigger a `possibly_scanned` warning.
+ADX warns when a page appears to be scanned (image-based) rather than text-based. Pages with fewer than 20 characters of extracted text trigger a `possibly_scanned` warning.
 
-For scanned PDFs, consider using an OCR pre-processing step before uploading to DocuNav.
+For scanned PDFs, consider using an OCR pre-processing step before uploading to ADX.
 
 ## Citations
 
@@ -53,9 +53,9 @@ Citations flow through to extractions, so every extracted field traces back to i
 ## Example
 
 ```python
-from docunav import DocuNav
+from adx import ADX
 
-dn = DocuNav()
+dn = ADX()
 doc_id = dn.upload("contract.pdf")
 
 # Get document structure

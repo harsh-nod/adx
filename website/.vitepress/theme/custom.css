@@ -9,118 +9,118 @@
   --vp-c-brand-2: #4ae2ff;
   --vp-c-brand-3: #1340ff;
 
-  --dn-bg-base: #f4f7ff;
-  --dn-bg-grad-1: radial-gradient(circle at 0% 0%, rgba(99, 130, 255, 0.28), transparent 55%);
-  --dn-bg-grad-2: radial-gradient(circle at 100% 100%, rgba(114, 227, 255, 0.18), transparent 60%);
-  --dn-bg-grad-3: linear-gradient(135deg, rgba(245, 248, 255, 0.95), rgba(229, 238, 255, 0.95));
-  --dn-bg-grid-1: repeating-linear-gradient(0deg, rgba(130, 149, 255, 0.08), rgba(130, 149, 255, 0.08) 1px, transparent 1px, transparent 48px);
-  --dn-bg-grid-2: repeating-linear-gradient(90deg, rgba(130, 149, 255, 0.08), rgba(130, 149, 255, 0.08) 1px, transparent 1px, transparent 48px);
+  --adx-bg-base: #f4f7ff;
+  --adx-bg-grad-1: radial-gradient(circle at 0% 0%, rgba(99, 130, 255, 0.28), transparent 55%);
+  --adx-bg-grad-2: radial-gradient(circle at 100% 100%, rgba(114, 227, 255, 0.18), transparent 60%);
+  --adx-bg-grad-3: linear-gradient(135deg, rgba(245, 248, 255, 0.95), rgba(229, 238, 255, 0.95));
+  --adx-bg-grid-1: repeating-linear-gradient(0deg, rgba(130, 149, 255, 0.08), rgba(130, 149, 255, 0.08) 1px, transparent 1px, transparent 48px);
+  --adx-bg-grid-2: repeating-linear-gradient(90deg, rgba(130, 149, 255, 0.08), rgba(130, 149, 255, 0.08) 1px, transparent 1px, transparent 48px);
 
-  --dn-text-1: #07102a;
-  --dn-text-2: #41517d;
-  --dn-link: #215aff;
+  --adx-text-1: #07102a;
+  --adx-text-2: #41517d;
+  --adx-link: #215aff;
 
-  --dn-nav-bg: rgba(255, 255, 255, 0.9);
-  --dn-nav-border: rgba(88, 110, 220, 0.16);
-  --dn-sidebar-bg: rgba(248, 250, 255, 0.94);
-  --dn-sidebar-border: rgba(88, 110, 220, 0.16);
+  --adx-nav-bg: rgba(255, 255, 255, 0.9);
+  --adx-nav-border: rgba(88, 110, 220, 0.16);
+  --adx-sidebar-bg: rgba(248, 250, 255, 0.94);
+  --adx-sidebar-border: rgba(88, 110, 220, 0.16);
 
-  --dn-panel-bg: rgba(255, 255, 255, 0.9);
-  --dn-panel-border: rgba(88, 110, 220, 0.16);
-  --dn-panel-shadow: 0 26px 60px rgba(22, 34, 74, 0.18);
+  --adx-panel-bg: rgba(255, 255, 255, 0.9);
+  --adx-panel-border: rgba(88, 110, 220, 0.16);
+  --adx-panel-shadow: 0 26px 60px rgba(22, 34, 74, 0.18);
 
-  --dn-card-bg: rgba(255, 255, 255, 0.94);
-  --dn-card-border: rgba(96, 122, 255, 0.2);
-  --dn-card-hover-border: rgba(72, 110, 255, 0.42);
-  --dn-card-shadow: 0 20px 44px rgba(18, 32, 78, 0.18);
-  --dn-card-hover-shadow: 0 28px 58px rgba(18, 32, 78, 0.25);
+  --adx-card-bg: rgba(255, 255, 255, 0.94);
+  --adx-card-border: rgba(96, 122, 255, 0.2);
+  --adx-card-hover-border: rgba(72, 110, 255, 0.42);
+  --adx-card-shadow: 0 20px 44px rgba(18, 32, 78, 0.18);
+  --adx-card-hover-shadow: 0 28px 58px rgba(18, 32, 78, 0.25);
 
-  --dn-code-bg: rgba(236, 241, 255, 0.96);
-  --dn-code-border: rgba(104, 132, 255, 0.22);
+  --adx-code-bg: rgba(236, 241, 255, 0.96);
+  --adx-code-border: rgba(104, 132, 255, 0.22);
 
-  --dn-button-secondary-bg: rgba(255, 255, 255, 0.88);
-  --dn-button-secondary-border: rgba(110, 138, 255, 0.32);
-  --dn-button-secondary-color: var(--dn-text-1);
+  --adx-button-secondary-bg: rgba(255, 255, 255, 0.88);
+  --adx-button-secondary-border: rgba(110, 138, 255, 0.32);
+  --adx-button-secondary-color: var(--adx-text-1);
 
-  --dn-footer-bg: rgba(245, 248, 255, 0.92);
-  --dn-footer-border: rgba(88, 110, 220, 0.14);
-  --dn-footer-text: rgba(68, 86, 135, 0.85);
+  --adx-footer-bg: rgba(245, 248, 255, 0.92);
+  --adx-footer-border: rgba(88, 110, 220, 0.14);
+  --adx-footer-text: rgba(68, 86, 135, 0.85);
 
-  --dn-blockquote-bg: rgba(227, 233, 255, 0.75);
-  --dn-blockquote-border: rgba(96, 122, 255, 0.35);
+  --adx-blockquote-bg: rgba(227, 233, 255, 0.75);
+  --adx-blockquote-border: rgba(96, 122, 255, 0.35);
 
-  --vp-c-text-1: var(--dn-text-1);
-  --vp-c-text-2: var(--dn-text-2);
-  --vp-c-link: var(--dn-link);
+  --vp-c-text-1: var(--adx-text-1);
+  --vp-c-text-2: var(--adx-text-2);
+  --vp-c-link: var(--adx-link);
 }
 
 .dark {
-  --dn-bg-base: #040615;
-  --dn-bg-grad-1: radial-gradient(circle at 0% 0%, rgba(38, 80, 255, 0.28), transparent 55%);
-  --dn-bg-grad-2: radial-gradient(circle at 100% 100%, rgba(24, 214, 255, 0.18), transparent 60%);
-  --dn-bg-grad-3: linear-gradient(135deg, rgba(7, 16, 40, 0.95), rgba(4, 10, 25, 0.95));
-  --dn-bg-grid-1: repeating-linear-gradient(0deg, rgba(37, 51, 99, 0.28), rgba(37, 51, 99, 0.28) 1px, transparent 1px, transparent 40px);
-  --dn-bg-grid-2: repeating-linear-gradient(90deg, rgba(37, 51, 99, 0.18), rgba(37, 51, 99, 0.18) 1px, transparent 1px, transparent 40px);
+  --adx-bg-base: #040615;
+  --adx-bg-grad-1: radial-gradient(circle at 0% 0%, rgba(38, 80, 255, 0.28), transparent 55%);
+  --adx-bg-grad-2: radial-gradient(circle at 100% 100%, rgba(24, 214, 255, 0.18), transparent 60%);
+  --adx-bg-grad-3: linear-gradient(135deg, rgba(7, 16, 40, 0.95), rgba(4, 10, 25, 0.95));
+  --adx-bg-grid-1: repeating-linear-gradient(0deg, rgba(37, 51, 99, 0.28), rgba(37, 51, 99, 0.28) 1px, transparent 1px, transparent 40px);
+  --adx-bg-grid-2: repeating-linear-gradient(90deg, rgba(37, 51, 99, 0.18), rgba(37, 51, 99, 0.18) 1px, transparent 1px, transparent 40px);
 
-  --dn-text-1: #e7eefc;
-  --dn-text-2: #b1bfd9;
-  --dn-link: #7ee0ff;
+  --adx-text-1: #e7eefc;
+  --adx-text-2: #b1bfd9;
+  --adx-link: #7ee0ff;
 
-  --dn-nav-bg: rgba(7, 11, 28, 0.92);
-  --dn-nav-border: rgba(78, 112, 255, 0.28);
-  --dn-sidebar-bg: rgba(7, 11, 28, 0.92);
-  --dn-sidebar-border: rgba(78, 112, 255, 0.28);
+  --adx-nav-bg: rgba(7, 11, 28, 0.92);
+  --adx-nav-border: rgba(78, 112, 255, 0.28);
+  --adx-sidebar-bg: rgba(7, 11, 28, 0.92);
+  --adx-sidebar-border: rgba(78, 112, 255, 0.28);
 
   --vp-nav-bg-color: rgba(7, 11, 28, 0.92);
   --vp-sidebar-bg-color: rgba(7, 11, 28, 0.92);
 
-  --dn-panel-bg: rgba(9, 14, 37, 0.78);
-  --dn-panel-border: rgba(78, 112, 255, 0.18);
-  --dn-panel-shadow: 0 -26px 60px rgba(0, 0, 0, 0.45);
+  --adx-panel-bg: rgba(9, 14, 37, 0.78);
+  --adx-panel-border: rgba(78, 112, 255, 0.18);
+  --adx-panel-shadow: 0 -26px 60px rgba(0, 0, 0, 0.45);
 
-  --dn-card-bg: rgba(14, 20, 46, 0.9);
-  --dn-card-border: rgba(80, 105, 190, 0.45);
-  --dn-card-hover-border: rgba(125, 208, 255, 0.7);
-  --dn-card-shadow: 0 18px 45px rgba(4, 10, 30, 0.45);
-  --dn-card-hover-shadow: 0 26px 52px rgba(8, 20, 45, 0.6);
+  --adx-card-bg: rgba(14, 20, 46, 0.9);
+  --adx-card-border: rgba(80, 105, 190, 0.45);
+  --adx-card-hover-border: rgba(125, 208, 255, 0.7);
+  --adx-card-shadow: 0 18px 45px rgba(4, 10, 30, 0.45);
+  --adx-card-hover-shadow: 0 26px 52px rgba(8, 20, 45, 0.6);
 
-  --dn-code-bg: linear-gradient(135deg, rgba(15, 20, 48, 0.95), rgba(11, 23, 55, 0.95));
-  --dn-code-border: rgba(90, 123, 255, 0.45);
+  --adx-code-bg: linear-gradient(135deg, rgba(15, 20, 48, 0.95), rgba(11, 23, 55, 0.95));
+  --adx-code-border: rgba(90, 123, 255, 0.45);
 
-  --dn-button-secondary-bg: rgba(20, 28, 60, 0.6);
-  --dn-button-secondary-border: rgba(94, 134, 255, 0.35);
-  --dn-button-secondary-color: var(--dn-text-1);
+  --adx-button-secondary-bg: rgba(20, 28, 60, 0.6);
+  --adx-button-secondary-border: rgba(94, 134, 255, 0.35);
+  --adx-button-secondary-color: var(--adx-text-1);
 
-  --dn-footer-bg: rgba(3, 6, 18, 0.9);
-  --dn-footer-border: rgba(78, 112, 255, 0.2);
-  --dn-footer-text: rgba(160, 180, 214, 0.85);
+  --adx-footer-bg: rgba(3, 6, 18, 0.9);
+  --adx-footer-border: rgba(78, 112, 255, 0.2);
+  --adx-footer-text: rgba(160, 180, 214, 0.85);
 
-  --dn-blockquote-bg: rgba(21, 30, 70, 0.6);
-  --dn-blockquote-border: rgba(90, 123, 255, 0.45);
+  --adx-blockquote-bg: rgba(21, 30, 70, 0.6);
+  --adx-blockquote-border: rgba(90, 123, 255, 0.45);
 
-  --vp-c-text-1: var(--dn-text-1);
-  --vp-c-text-2: var(--dn-text-2);
-  --vp-c-link: var(--dn-link);
+  --vp-c-text-1: var(--adx-text-1);
+  --vp-c-text-2: var(--adx-text-2);
+  --vp-c-link: var(--adx-link);
 }
 
 body {
   font-family: var(--vp-font-family-base);
-  background-color: var(--dn-bg-base);
-  background-image: var(--dn-bg-grad-1), var(--dn-bg-grad-2), var(--dn-bg-grad-3), var(--dn-bg-grid-1), var(--dn-bg-grid-2);
+  background-color: var(--adx-bg-base);
+  background-image: var(--adx-bg-grad-1), var(--adx-bg-grad-2), var(--adx-bg-grad-3), var(--adx-bg-grid-1), var(--adx-bg-grid-2);
   background-blend-mode: screen, screen, multiply, overlay, overlay;
-  color: var(--dn-text-1);
+  color: var(--adx-text-1);
 }
 
-a { color: var(--dn-link); transition: color 0.2s ease; }
+a { color: var(--adx-link); transition: color 0.2s ease; }
 a:hover { color: var(--vp-c-brand-2); }
 
 .VPNav {
-  background: var(--dn-nav-bg);
+  background: var(--adx-nav-bg);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--dn-nav-border);
+  border-bottom: 1px solid var(--adx-nav-border);
   box-shadow: 0 18px 32px rgba(20, 32, 64, 0.12);
   pointer-events: auto;
-  color: var(--dn-text-1);
+  color: var(--adx-text-1);
 }
 
 .VPNavBarTitle .title {
@@ -130,16 +130,16 @@ a:hover { color: var(--vp-c-brand-2); }
 }
 
 .VPSidebar {
-  background: var(--dn-sidebar-bg);
-  border-right: 1px solid var(--dn-sidebar-border);
+  background: var(--adx-sidebar-bg);
+  border-right: 1px solid var(--adx-sidebar-border);
   box-shadow: 12px 0 32px rgba(20, 32, 64, 0.08);
-  color: var(--dn-text-1);
+  color: var(--adx-text-1);
 }
 
 .VPFooter {
-  background: var(--dn-footer-bg);
-  border-top: 1px solid var(--dn-footer-border);
-  color: var(--dn-footer-text);
+  background: var(--adx-footer-bg);
+  border-top: 1px solid var(--adx-footer-border);
+  color: var(--adx-footer-text);
 }
 
 .VPFooter .message {
@@ -149,15 +149,15 @@ a:hover { color: var(--vp-c-brand-2); }
   color: var(--vp-c-text-1);
 }
 
-.VPFooter .copyright { color: var(--dn-footer-text); }
+.VPFooter .copyright { color: var(--adx-footer-text); }
 
 .VPDoc { background: transparent; }
 
 .VPContent .content {
-  background: var(--dn-panel-bg);
+  background: var(--adx-panel-bg);
   border-radius: 24px 24px 0 0;
-  border: 1px solid var(--dn-panel-border);
-  box-shadow: var(--dn-panel-shadow);
+  border: 1px solid var(--adx-panel-border);
+  box-shadow: var(--adx-panel-shadow);
   padding: 0 2rem 4rem;
 }
 
@@ -260,9 +260,9 @@ a:hover { color: var(--vp-c-brand-2); }
 }
 
 .hero-actions .action {
-  background: var(--dn-button-secondary-bg);
-  color: var(--dn-button-secondary-color);
-  border-color: var(--dn-button-secondary-border);
+  background: var(--adx-button-secondary-bg);
+  color: var(--adx-button-secondary-color);
+  border-color: var(--adx-button-secondary-border);
 }
 
 .hero-actions .action:hover {
@@ -283,18 +283,18 @@ a:hover { color: var(--vp-c-brand-2); }
 }
 
 .landing-grid .card {
-  background: var(--dn-card-bg);
-  border: 1px solid var(--dn-card-border);
+  background: var(--adx-card-bg);
+  border: 1px solid var(--adx-card-border);
   border-radius: 18px;
   padding: 2.15rem 2rem;
-  box-shadow: var(--dn-card-shadow);
+  box-shadow: var(--adx-card-shadow);
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .landing-grid .card:hover {
   transform: translateY(-6px);
-  border-color: var(--dn-card-hover-border);
-  box-shadow: var(--dn-card-hover-shadow);
+  border-color: var(--adx-card-hover-border);
+  box-shadow: var(--adx-card-hover-shadow);
 }
 
 .landing-grid .card h3 {
@@ -338,15 +338,15 @@ a:hover { color: var(--vp-c-brand-2); }
 }
 
 .integrations pre {
-  background: var(--dn-code-bg);
+  background: var(--adx-code-bg);
   color: var(--vp-c-text-1);
   border-radius: 16px;
   padding: 1.1rem 1.3rem;
   font-size: 0.92rem;
   line-height: 1.6;
   overflow-x: auto;
-  border: 1px solid var(--dn-code-border);
-  box-shadow: inset 0 0 0 1px rgba(85, 120, 255, 0.18), var(--dn-card-shadow);
+  border: 1px solid var(--adx-code-border);
+  box-shadow: inset 0 0 0 1px rgba(85, 120, 255, 0.18), var(--adx-card-shadow);
 }
 
 .integrations code { font-family: var(--vp-font-family-mono); }
@@ -364,8 +364,8 @@ a:hover { color: var(--vp-c-brand-2); }
 .VPDoc code { font-family: var(--vp-font-family-mono); color: #9be7ff; }
 
 .VPDoc blockquote {
-  border-left: 3px solid var(--dn-blockquote-border);
-  background: var(--dn-blockquote-bg);
+  border-left: 3px solid var(--adx-blockquote-border);
+  background: var(--adx-blockquote-bg);
   padding: 1rem 1.5rem;
   border-radius: 12px;
   color: var(--vp-c-text-2);
@@ -387,8 +387,8 @@ a:hover { color: var(--vp-c-brand-2); }
 .demo-panel {
   border-radius: 14px;
   padding: 1.5rem;
-  border: 1px solid var(--dn-card-border);
-  background: var(--dn-card-bg);
+  border: 1px solid var(--adx-card-border);
+  background: var(--adx-card-bg);
 }
 
 .demo-panel h4 {
@@ -445,8 +445,8 @@ a:hover { color: var(--vp-c-brand-2); }
   font-size: 0.82rem;
   font-weight: 500;
   white-space: nowrap;
-  background: var(--dn-card-bg);
-  border: 1px solid var(--dn-card-border);
+  background: var(--adx-card-bg);
+  border: 1px solid var(--adx-card-border);
   color: var(--vp-c-text-1);
   animation: pipelinePulse 3s ease-in-out infinite;
   flex-shrink: 0;
@@ -498,7 +498,7 @@ a:hover { color: var(--vp-c-brand-2); }
 
 .arch-diagram svg { width: 100%; height: auto; max-height: 260px; }
 .arch-diagram svg text { font-family: var(--vp-font-family-mono); font-size: 11px; fill: var(--vp-c-text-1); }
-.arch-diagram svg .arch-box { fill: var(--dn-card-bg); stroke: var(--dn-card-border); stroke-width: 1.5; rx: 10; }
+.arch-diagram svg .arch-box { fill: var(--adx-card-bg); stroke: var(--adx-card-border); stroke-width: 1.5; rx: 10; }
 .arch-diagram svg .arch-box-accent { fill: none; stroke: var(--vp-c-brand-1); stroke-width: 2; rx: 10; }
 .arch-diagram svg .arch-arrow { stroke: var(--vp-c-brand-1); stroke-width: 1.5; marker-end: url(#arrowhead); }
 .arch-diagram svg .arch-arrow-back { stroke: var(--vp-c-text-2); stroke-width: 1; stroke-dasharray: 5 4; marker-end: url(#arrowhead-dim); }

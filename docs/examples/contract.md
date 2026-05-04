@@ -9,9 +9,9 @@ This example shows how to navigate and extract key terms from a PDF contract.
 ## Upload and Profile
 
 ```python
-from docunav import DocuNav
+from adx import ADX
 
-dn = DocuNav()
+dn = ADX()
 doc_id = dn.upload("agreement.pdf")
 profile = dn.profile(doc_id)
 # document_type: "contract"

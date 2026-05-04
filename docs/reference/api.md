@@ -4,7 +4,7 @@ title: REST API
 
 # REST API Reference
 
-Start the server with `docunav serve` (default: `http://localhost:8000`).
+Start the server with `adx serve` (default: `http://localhost:8000`).
 
 ## Files
 

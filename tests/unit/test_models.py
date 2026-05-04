@@ -1,4 +1,4 @@
-"""Tests for docunav.models.document — DocumentGraph, Page, Table, Citation, etc."""
+"""Tests for adx.models.document — DocumentGraph, Page, Table, Citation, etc."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ import json
 
 import pytest
 
-from docunav.models.document import (
+from adx.models.document import (
     BoundingBox,
     Citation,
     CitationType,

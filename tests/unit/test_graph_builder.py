@@ -6,15 +6,15 @@ from pathlib import Path
 
 import pytest
 
-from docunav.models.document import (
+from adx.models.document import (
     CitationType,
     DocumentType,
     FileType,
     ProcessingStatus,
     TextBlockType,
 )
-from docunav.parsers.base import ParserResult, ParserWarning
-from docunav.parsers.graph_builder import GraphBuilder, _avg, _guess_mime, _make_bbox, _make_table
+from adx.parsers.base import ParserResult, ParserWarning
+from adx.parsers.graph_builder import GraphBuilder, _avg, _guess_mime, _make_bbox, _make_table
 
 
 # ---------------------------------------------------------------------------

@@ -4,26 +4,26 @@ title: Quickstart
 
 # Quickstart
 
-Get started with DocuNav in five minutes.
+Get started with ADX in five minutes.
 
 ## Install
 
 ```bash
-pip install docunav
+pip install adx
 ```
 
 For LLM-powered extraction (optional):
 
 ```bash
-pip install docunav[llm]
+pip install adx[llm]
 ```
 
 ## Upload a Document
 
 ```python
-from docunav import DocuNav
+from adx import ADX
 
-dn = DocuNav()
+dn = ADX()
 doc_id = dn.upload("invoice.pdf")
 print(f"Document ID: {doc_id}")
 ```
@@ -108,7 +108,7 @@ csv_data = dn.export(doc_id, format="csv")
 Start the server and use HTTP endpoints:
 
 ```bash
-docunav serve
+adx serve
 
 # Upload
 curl -X POST http://localhost:8000/v1/files -F "file=@invoice.pdf"
@@ -125,11 +125,11 @@ curl -X POST http://localhost:8000/v1/files/{id}/extract \
 ## CLI
 
 ```bash
-docunav upload invoice.pdf
-docunav profile <id>
-docunav search <id> --query "total amount"
-docunav extract <id> --schema invoice
-docunav validate <id> --extraction <eid>
+adx upload invoice.pdf
+adx profile <id>
+adx search <id> --query "total amount"
+adx extract <id> --schema invoice
+adx validate <id> --extraction <eid>
 ```
 
 ## Next Steps

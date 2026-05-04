@@ -9,9 +9,9 @@ This example extracts structured data from a PDF invoice and validates the resul
 ## Upload
 
 ```python
-from docunav import DocuNav
+from adx import ADX
 
-dn = DocuNav()
+dn = ADX()
 doc_id = dn.upload("invoice.pdf")
 ```
 
@@ -79,13 +79,13 @@ The arithmetic validator checks that `subtotal + tax = total`. If the values don
 ## CLI Workflow
 
 ```bash
-docunav upload invoice.pdf
+adx upload invoice.pdf
 # → doc_abc123
 
-docunav profile doc_abc123
-docunav extract doc_abc123 --schema invoice
+adx profile doc_abc123
+adx extract doc_abc123 --schema invoice
 # → ext_def456
 
-docunav validate doc_abc123 --extraction ext_def456
-docunav export doc_abc123 --format json
+adx validate doc_abc123 --extraction ext_def456
+adx export doc_abc123 --format json
 ```

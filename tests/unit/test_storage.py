@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from docunav.models.document import (
+from adx.models.document import (
     Citation,
     Document,
     DocumentGraph,
@@ -23,7 +23,7 @@ from docunav.models.document import (
     Workbook,
     Sheet,
 )
-from docunav.storage.store import DocumentStore
+from adx.storage.store import DocumentStore
 
 
 # ---------------------------------------------------------------------------
@@ -33,7 +33,7 @@ from docunav.storage.store import DocumentStore
 @pytest.fixture
 def store(tmp_path):
     """Create a DocumentStore backed by a tmp_path directory."""
-    return DocumentStore(base_dir=tmp_path / "docunav_test_storage")
+    return DocumentStore(base_dir=tmp_path / "adx_test_storage")
 
 
 @pytest.fixture
@@ -116,7 +116,7 @@ class TestStoreInit:
         # Just verify the class can be instantiated with no args
         # (don't actually create in default location)
         s = DocumentStore.__new__(DocumentStore)
-        s.base_dir = Path("/tmp/docunav_test_default")
+        s.base_dir = Path("/tmp/adx_test_default")
         s.files_dir = s.base_dir / "files"
         s.graphs_dir = s.base_dir / "graphs"
         s.extractions_dir = s.base_dir / "extractions"

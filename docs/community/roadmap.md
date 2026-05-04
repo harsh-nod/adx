@@ -19,6 +19,8 @@ title: Roadmap
 - [x] **PDF parsing** — PyMuPDF adapter with text blocks, tables, bounding boxes (Alpha)
 - [x] **Excel parsing** — openpyxl adapter with formulas, hidden content, named ranges (Alpha)
 - [x] **CSV parsing** — stdlib adapter with dialect sniffing (Alpha)
+- [x] **DOCX parsing** — python-docx adapter with headings, tables, images, metadata (Alpha)
+- [x] **RTF parsing** — striprtf adapter with text extraction (Alpha)
 - [x] **9 agent tools** — profile, structure, search, get_page, get_table, list_sheets, read_range, find_cells, inspect_formula (Alpha)
 - [x] **Schema-driven extraction** — built-in schemas for invoice, contract, financial_model, table (Alpha)
 - [x] **Validation engine** — required fields, types, arithmetic, citations, confidence (Alpha)
@@ -32,7 +34,6 @@ title: Roadmap
 
 - [ ] MCP server implementation
 - [ ] LLM-powered extraction (optional enhancement)
-- [ ] DOCX parser adapter
 - [ ] HTML parser adapter
 - [ ] Stable API guarantees (v1.0)
 

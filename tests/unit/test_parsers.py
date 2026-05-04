@@ -6,15 +6,15 @@ from pathlib import Path
 
 import pytest
 
-from docunav.models.document import FileType
-from docunav.parsers.base import (
+from adx.models.document import FileType
+from adx.parsers.base import (
     ParserAdapter,
     ParserCapabilities,
     ParserResult,
     ParserWarning,
 )
-from docunav.parsers.csv_adapter import CSVAdapter, _col_letter
-from docunav.parsers.registry import EXTENSION_MAP, ParserRegistry
+from adx.parsers.csv_adapter import CSVAdapter, _col_letter
+from adx.parsers.registry import EXTENSION_MAP, ParserRegistry
 
 
 # ---------------------------------------------------------------------------
@@ -353,7 +353,7 @@ class TestParserRegistryAdapters:
 class TestExtensionMap:
     def test_all_known_extensions(self):
         expected = {
-            ".pdf", ".xlsx", ".xls", ".csv", ".docx", ".txt",
+            ".pdf", ".xlsx", ".xls", ".csv", ".docx", ".rtf", ".txt",
             ".png", ".jpg", ".jpeg", ".tiff", ".tif",
         }
         assert set(EXTENSION_MAP.keys()) == expected

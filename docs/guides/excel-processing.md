@@ -4,7 +4,7 @@ title: Excel Processing
 
 # Excel Processing
 
-DocuNav uses openpyxl to parse Excel files (.xlsx) into structured `DocumentGraph` objects. This guide covers spreadsheet-specific features.
+ADX uses openpyxl to parse Excel files (.xlsx) into structured `DocumentGraph` objects. This guide covers spreadsheet-specific features.
 
 ## What Gets Extracted
 
@@ -19,7 +19,7 @@ DocuNav uses openpyxl to parse Excel files (.xlsx) into structured `DocumentGrap
 
 ## Dual-Mode Loading
 
-DocuNav loads each workbook twice:
+ADX loads each workbook twice:
 1. **Formula mode** — preserves formula text (e.g., `=SUM(A1:A10)`)
 2. **Data-only mode** — reads calculated values (e.g., `42.5`)
 
@@ -42,7 +42,7 @@ Returns:
 
 ## Hidden Content Detection
 
-DocuNav tracks hidden elements:
+ADX tracks hidden elements:
 - Hidden sheets (visible in `list_sheets` with `hidden: true`)
 - Hidden rows and columns (flagged in `read_range` results)
 - Cells in hidden rows/columns are accessible but marked
@@ -81,9 +81,9 @@ for cell in data["cells"]:
 ## Example
 
 ```python
-from docunav import DocuNav
+from adx import ADX
 
-dn = DocuNav()
+dn = ADX()
 doc_id = dn.upload("financial_model.xlsx")
 
 # List all sheets
