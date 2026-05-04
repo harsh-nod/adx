@@ -229,6 +229,64 @@ def sheets(ctx: click.Context, file_id: str) -> None:
     console.print(table)
 
 
+@cli.command(name="upload-dir")
+@click.argument("directory", type=click.Path(exists=True, file_okay=False))
+@click.option("--recursive/--no-recursive", default=True, help="Recurse into subdirectories.")
+@click.pass_context
+def upload_dir(ctx: click.Context, directory: str, recursive: bool) -> None:
+    """Upload all supported files in a directory."""
+    client = _client(ctx.obj.get("storage_dir"))
+    with console.status("Processing directory..."):
+        result = client.upload_directory(directory, recursive=recursive)
+
+    console.print(f"[green]Total:[/green]      {result.total_files}")
+    console.print(f"[green]Successful:[/green] {result.successful}")
+    if result.failed:
+        console.print(f"[red]Failed:[/red]     {result.failed}")
+        for path, error in result.errors.items():
+            console.print(f"  [red]{path}:[/red] {error}")
+
+    if result.graphs:
+        table = RichTable(title="Uploaded Files")
+        table.add_column("File ID")
+        for fid in result.graphs:
+            graph = client.get_graph(fid)
+            if graph:
+                table.add_row(f"{graph.document.id} ({graph.document.filename})")
+        console.print(table)
+
+
+@cli.command(name="search-all")
+@click.argument("query")
+@click.option("--max-results", default=20, help="Maximum results to return.")
+@click.pass_context
+def search_all(ctx: click.Context, query: str, max_results: int) -> None:
+    """Search across all uploaded documents."""
+    client = _client(ctx.obj.get("storage_dir"))
+    hits = client.search_corpus(query, max_results=max_results)
+
+    if not hits:
+        console.print("[dim]No matches found.[/dim]")
+        return
+
+    table = RichTable(title=f"Corpus Search: '{query}'")
+    table.add_column("Score", justify="right")
+    table.add_column("File")
+    table.add_column("Location")
+    table.add_column("Snippet")
+
+    for hit in hits:
+        table.add_row(
+            str(hit["score"]),
+            hit["filename"],
+            hit["citation"],
+            hit["text_snippet"][:80],
+        )
+
+    console.print(table)
+    console.print(f"\n[dim]{len(hits)} results[/dim]")
+
+
 @cli.command()
 @click.argument("file_id")
 @click.pass_context

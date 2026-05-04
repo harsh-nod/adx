@@ -508,3 +508,17 @@ class DocumentGraph(BaseModel):
                             )
                         )
         return results
+
+
+# ---------------------------------------------------------------------------
+# Batch processing
+# ---------------------------------------------------------------------------
+
+class BatchResult(BaseModel):
+    """Result of a batch directory upload operation."""
+
+    total_files: int = 0
+    successful: int = 0
+    failed: int = 0
+    graphs: list[str] = Field(default_factory=list)
+    errors: dict[str, str] = Field(default_factory=dict)

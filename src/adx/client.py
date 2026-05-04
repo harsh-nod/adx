@@ -22,6 +22,7 @@ from adx.extraction.extractor import Extractor
 from adx.extraction.schemas import ExtractionSchema, SchemaRegistry
 from adx.extraction.validator import Validator
 from adx.models.document import (
+    BatchResult,
     DocumentGraph,
     Extraction,
     ValidationResult,
@@ -113,6 +114,98 @@ class ADX:
         if graph is None:
             raise ValueError(f"File {file_id} not found. Upload and process it first.")
         return graph.to_markdown()
+
+    def upload_directory(
+        self,
+        path: str | Path,
+        recursive: bool = True,
+        extensions: set[str] | None = None,
+    ) -> BatchResult:
+        """Upload all supported files in a directory."""
+        from adx.parsers.registry import EXTENSION_MAP
+
+        dir_path = Path(path)
+        if not dir_path.is_dir():
+            raise NotADirectoryError(f"Not a directory: {dir_path}")
+
+        supported_exts = extensions or set(EXTENSION_MAP.keys())
+        files = dir_path.rglob("*") if recursive else dir_path.glob("*")
+        file_list = sorted(
+            f for f in files if f.is_file() and f.suffix.lower() in supported_exts
+        )
+
+        result = BatchResult(total_files=len(file_list))
+
+        for file_path in file_list:
+            try:
+                graph = self.upload(file_path)
+                result.graphs.append(graph.document.id)
+                result.successful += 1
+            except Exception as e:
+                result.errors[str(file_path)] = str(e)
+                result.failed += 1
+
+        return result
+
+    # ------------------------------------------------------------------
+    # Corpus search
+    # ------------------------------------------------------------------
+
+    def search_corpus(
+        self,
+        query: str,
+        file_ids: list[str] | None = None,
+        max_results: int = 20,
+    ) -> list[dict[str, Any]]:
+        """Search across all stored document graphs."""
+        ids = file_ids or self.store.list_graphs()
+        all_hits: list[dict[str, Any]] = []
+
+        query_lower = query.lower()
+        query_tokens = [w for w in query_lower.split() if len(w) >= 2]
+
+        for fid in ids:
+            graph = self.store.load_graph(fid)
+            if graph is None:
+                continue
+
+            # Text search
+            for page in graph.pages:
+                for block in page.text_blocks:
+                    text_lower = block.text.lower()
+                    score = sum(text_lower.count(t) for t in query_tokens)
+                    if score > 0:
+                        all_hits.append({
+                            "file_id": fid,
+                            "filename": graph.document.filename,
+                            "text_snippet": block.text[:200],
+                            "page_number": page.page_number,
+                            "sheet_name": None,
+                            "score": score,
+                            "citation": f"page {page.page_number}",
+                        })
+
+            # Cell search
+            if graph.workbook:
+                for sheet in graph.workbook.sheets:
+                    for table in sheet.tables:
+                        for cell in table.cells:
+                            val_lower = str(cell.value).lower()
+                            score = sum(val_lower.count(t) for t in query_tokens)
+                            if score > 0:
+                                addr = cell.source_cell_ref or f"R{cell.row_index}C{cell.column_index}"
+                                all_hits.append({
+                                    "file_id": fid,
+                                    "filename": graph.document.filename,
+                                    "text_snippet": str(cell.value)[:200],
+                                    "page_number": None,
+                                    "sheet_name": sheet.name,
+                                    "score": score,
+                                    "citation": f"sheet '{sheet.name}', cell {addr}",
+                                })
+
+        all_hits.sort(key=lambda h: h["score"], reverse=True)
+        return all_hits[:max_results]
 
     # ------------------------------------------------------------------
     # Inspection tools

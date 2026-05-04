@@ -133,6 +133,47 @@ async def list_files() -> JSONResponse:
     return JSONResponse(content={"files": files})
 
 
+class DirectoryRequest(BaseModel):
+    path: str
+    recursive: bool = True
+    extensions: list[str] | None = None
+
+
+class CorpusSearchRequest(BaseModel):
+    query: str
+    file_ids: list[str] | None = None
+    max_results: int = 20
+
+
+@app.post("/v1/directories", tags=["files"])
+async def upload_directory(body: DirectoryRequest) -> JSONResponse:
+    """Upload all supported files in a directory."""
+    client = get_client()
+    try:
+        exts = set(body.extensions) if body.extensions else None
+        result = client.upload_directory(body.path, recursive=body.recursive, extensions=exts)
+        return JSONResponse(
+            status_code=201,
+            content={
+                "total_files": result.total_files,
+                "successful": result.successful,
+                "failed": result.failed,
+                "graphs": result.graphs,
+                "errors": result.errors,
+            },
+        )
+    except NotADirectoryError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post("/v1/search", tags=["search"])
+async def search_corpus(body: CorpusSearchRequest) -> JSONResponse:
+    """Search across all stored document graphs."""
+    client = get_client()
+    hits = client.search_corpus(body.query, body.file_ids, body.max_results)
+    return JSONResponse(content={"query": body.query, "results": hits, "total": len(hits)})
+
+
 @app.get("/v1/files/{file_id}/markdown", tags=["files"])
 async def get_markdown(file_id: str) -> JSONResponse:
     """Export document as markdown."""
