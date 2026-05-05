@@ -45,6 +45,9 @@ export default defineConfig({
             { text: "Extraction", link: "/guides/extraction" },
             { text: "Validation", link: "/guides/validation" },
             { text: "Citations", link: "/guides/citations" },
+            { text: "Chunking", link: "/guides/chunking" },
+            { text: "Batch Operations", link: "/guides/batch-operations" },
+            { text: "Corpus Search", link: "/guides/corpus-search" },
           ]
         },
         {

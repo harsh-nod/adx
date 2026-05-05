@@ -181,14 +181,19 @@ class Extractor:
         """Heuristic: find a field value near its label in the document text."""
         label_variants = self._label_variants(field_name)
 
-        for label in label_variants:
+        for i, label in enumerate(label_variants):
             pattern = re.compile(
-                rf"(?i){re.escape(label)}\s*[:\-]?\s*(.+?)(?:\n|$)"
+                rf"(?i){re.escape(label)}\s*[:\-]?\s*(.{{1,500}}?)(?:\n|$)"
             )
             match = pattern.search(full_text)
             if match:
-                raw_value = match.group(1).strip()
+                raw_value = match.group(1).strip().rstrip(";,")
+                if not raw_value:
+                    continue
                 value = self._coerce(raw_value, field_type)
+
+                # Confidence: exact field name match scores higher
+                confidence = 0.85 if i == 0 else 0.6
 
                 # Find the page containing this text
                 citation = None
@@ -207,7 +212,7 @@ class Extractor:
                     if citation:
                         break
 
-                return value, 0.85, citation
+                return value, confidence, citation
 
         return None, 0.0, None
 

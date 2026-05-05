@@ -8,7 +8,9 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import shutil
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -16,14 +18,20 @@ from adx.models.document import DocumentGraph, Extraction
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_STORAGE_DIR = Path("./adx_storage")
+DEFAULT_STORAGE_DIR = Path("./adx_storage").resolve()
+
+
+def _validate_filename(filename: str) -> None:
+    """Reject filenames that could escape the storage directory."""
+    if ".." in filename or filename.startswith("/") or filename.startswith("\\"):
+        raise ValueError(f"Invalid filename (path traversal blocked): {filename}")
 
 
 class DocumentStore:
     """Local filesystem store for documents and graphs."""
 
     def __init__(self, base_dir: Path | str | None = None) -> None:
-        self.base_dir = Path(base_dir) if base_dir else DEFAULT_STORAGE_DIR
+        self.base_dir = Path(base_dir).resolve() if base_dir else DEFAULT_STORAGE_DIR
         self.files_dir = self.base_dir / "files"
         self.graphs_dir = self.base_dir / "graphs"
         self.extractions_dir = self.base_dir / "extractions"
@@ -34,15 +42,36 @@ class DocumentStore:
         self.graphs_dir.mkdir(parents=True, exist_ok=True)
         self.extractions_dir.mkdir(parents=True, exist_ok=True)
 
+    @staticmethod
+    def _atomic_write(path: Path, data: str) -> None:
+        """Write data atomically by writing to a temp file then replacing."""
+        fd, tmp_path = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
+        closed = False
+        try:
+            os.write(fd, data.encode())
+            os.close(fd)
+            closed = True
+            os.replace(tmp_path, path)
+        except BaseException:
+            if not closed:
+                os.close(fd)
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+            raise
+
     # -- Files --
 
     def store_file(self, file_path: Path, file_id: str) -> Path:
+        _validate_filename(file_path.name)
         dest = self.files_dir / file_id / file_path.name
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(str(file_path), str(dest))
         return dest
 
     def store_file_bytes(self, data: bytes, filename: str, file_id: str) -> Path:
+        _validate_filename(filename)
         dest = self.files_dir / file_id / filename
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(data)
@@ -56,7 +85,7 @@ class DocumentStore:
 
     def save_graph(self, graph: DocumentGraph) -> Path:
         path = self.graphs_dir / f"{graph.document.id}.json"
-        path.write_text(graph.model_dump_json(indent=2))
+        self._atomic_write(path, graph.model_dump_json(indent=2))
         return path
 
     def load_graph(self, file_id: str) -> DocumentGraph | None:
@@ -80,7 +109,7 @@ class DocumentStore:
 
     def save_extraction(self, extraction: Extraction) -> Path:
         path = self.extractions_dir / f"{extraction.id}.json"
-        path.write_text(extraction.model_dump_json(indent=2))
+        self._atomic_write(path, extraction.model_dump_json(indent=2))
         return path
 
     def load_extraction(self, extraction_id: str) -> Extraction | None:

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import mimetypes
 from pathlib import Path
 
 from adx.models.document import FileType
@@ -16,6 +17,25 @@ from adx.parsers.rtf_adapter import RTFAdapter
 from adx.parsers.xls_adapter import XlrdAdapter
 
 logger = logging.getLogger(__name__)
+
+# Maximum file size: 500 MB
+MAX_FILE_SIZE: int = 500 * 1024 * 1024
+
+# Map MIME types to FileTypes for cross-validation
+MIME_TO_FILE_TYPE: dict[str, FileType] = {
+    "application/pdf": FileType.PDF,
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": FileType.XLSX,
+    "application/vnd.ms-excel": FileType.XLS,
+    "text/csv": FileType.CSV,
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": FileType.DOCX,
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation": FileType.PPTX,
+    "application/rtf": FileType.RTF,
+    "text/rtf": FileType.RTF,
+    "text/plain": FileType.TEXT,
+    "image/png": FileType.IMAGE,
+    "image/jpeg": FileType.IMAGE,
+    "image/tiff": FileType.IMAGE,
+}
 
 EXTENSION_MAP: dict[str, FileType] = {
     ".pdf": FileType.PDF,
@@ -52,8 +72,35 @@ class ParserRegistry:
         self._adapters.insert(0, adapter)
 
     def detect_file_type(self, file_path: Path) -> FileType:
+        # Check file size
+        try:
+            size = file_path.stat().st_size
+        except OSError:
+            size = 0
+        if size > MAX_FILE_SIZE:
+            raise ValueError(
+                f"File too large ({size / (1024 * 1024):.1f} MB). "
+                f"Maximum allowed size is {MAX_FILE_SIZE / (1024 * 1024):.0f} MB."
+            )
+
         ext = file_path.suffix.lower()
-        return EXTENSION_MAP.get(ext, FileType.UNKNOWN)
+        file_type = EXTENSION_MAP.get(ext, FileType.UNKNOWN)
+
+        # Cross-check with MIME sniffing
+        mime_type, _ = mimetypes.guess_type(str(file_path))
+        if mime_type and mime_type in MIME_TO_FILE_TYPE:
+            mime_file_type = MIME_TO_FILE_TYPE[mime_type]
+            if file_type != FileType.UNKNOWN and mime_file_type != file_type:
+                logger.warning(
+                    "MIME type %s suggests %s but extension suggests %s for %s; "
+                    "using extension-based type",
+                    mime_type,
+                    mime_file_type.value,
+                    file_type.value,
+                    file_path.name,
+                )
+
+        return file_type
 
     def get_adapter(self, file_type: FileType) -> ParserAdapter | None:
         for adapter in self._adapters:

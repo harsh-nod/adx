@@ -233,7 +233,9 @@ adx export <id> --format markdown
 |---|---|---|
 | PDF | PyMuPDF | Text blocks, tables, bounding boxes, section detection |
 | Excel (.xlsx) | openpyxl | Sheets, formulas, named ranges, hidden cells, merged cells |
+| Excel (.xls) | xlrd | Legacy Excel format support |
 | DOCX | python-docx | Paragraphs, headings, tables, images, metadata |
+| PPTX | python-pptx | Slides, text shapes, tables, layout extraction |
 | RTF | striprtf | Text extraction with formatting stripped |
 | CSV | stdlib csv | Dialect sniffing, encoding detection, header inference |
 

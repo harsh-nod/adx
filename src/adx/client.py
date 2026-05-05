@@ -15,8 +15,11 @@ Usage:
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 from typing import Any
+
+logger = logging.getLogger(__name__)
 
 from adx.extraction.extractor import Extractor
 from adx.extraction.schemas import ExtractionSchema, SchemaRegistry
@@ -98,7 +101,10 @@ class ADX:
             self.store.save_graph(graph)
             return graph
         finally:
-            tmp_path.unlink(missing_ok=True)
+            try:
+                tmp_path.unlink(missing_ok=True)
+            except OSError as cleanup_err:
+                logger.warning("Failed to clean up temp file %s: %s", tmp_path, cleanup_err)
 
     def get_graph(self, file_id: str) -> DocumentGraph | None:
         """Load a previously processed DocumentGraph."""

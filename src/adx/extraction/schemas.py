@@ -13,6 +13,14 @@ class FieldDef(BaseModel):
     field_type: str = "string"
     required: bool = True
     validation_rules: list[str] = Field(default_factory=list)
+    # JSON Schema constraints preserved for richer hints
+    enum: list[Any] | None = None
+    minimum: float | None = None
+    maximum: float | None = None
+    min_length: int | None = None
+    max_length: int | None = None
+    pattern: str | None = None
+    items_type: str | None = None
 
 
 class ExtractionSchema(BaseModel):
@@ -45,8 +53,27 @@ class ExtractionSchema(BaseModel):
             }
             if field_def.field_type == "date":
                 prop["format"] = "date"
+            if field_def.field_type == "currency":
+                prop["description"] = (
+                    field_def.description + " (currency value)" if field_def.description
+                    else "Currency value"
+                )
             if field_def.field_type == "array":
-                prop["items"] = {"type": "object"}
+                items_type = field_def.items_type or "object"
+                prop["items"] = {"type": items_type}
+            # Emit preserved constraints
+            if field_def.enum is not None:
+                prop["enum"] = field_def.enum
+            if field_def.minimum is not None:
+                prop["minimum"] = field_def.minimum
+            if field_def.maximum is not None:
+                prop["maximum"] = field_def.maximum
+            if field_def.min_length is not None:
+                prop["minLength"] = field_def.min_length
+            if field_def.max_length is not None:
+                prop["maxLength"] = field_def.max_length
+            if field_def.pattern is not None:
+                prop["pattern"] = field_def.pattern
             properties[field_def.name] = prop
             if field_def.required:
                 required.append(field_def.name)
@@ -212,11 +239,23 @@ class SchemaRegistry:
             if prop.get("format") == "date":
                 field_type = "date"
 
+            # Extract array items type
+            items_type = None
+            if json_type == "array" and "items" in prop:
+                items_type = prop["items"].get("type", "object")
+
             fields.append(FieldDef(
                 name=field_name,
                 description=prop.get("description", ""),
                 field_type=field_type,
                 required=field_name in required,
+                enum=prop.get("enum"),
+                minimum=prop.get("minimum"),
+                maximum=prop.get("maximum"),
+                min_length=prop.get("minLength"),
+                max_length=prop.get("maxLength"),
+                pattern=prop.get("pattern"),
+                items_type=items_type,
             ))
 
         schema = ExtractionSchema(

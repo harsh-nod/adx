@@ -262,11 +262,19 @@ class GraphBuilder:
         sheet_name: str,
         parser_name: str,
     ) -> Table:
+        if not cells:
+            return Table(
+                sheet_name=sheet_name, row_count=0, column_count=0,
+                cells=[], confidence=1.0, source_parser=parser_name,
+            )
+
         max_row = max((c.get("row", c.get("row_index", 0)) for c in cells), default=0)
         max_col = max((c.get("column", c.get("column_index", 0)) for c in cells), default=0)
 
         # Normalize: openpyxl uses 1-based row/column
         table_cells: list[TableCell] = []
+        rows_seen: set[int] = set()
+        cols_seen: set[int] = set()
         for c in cells:
             row = c.get("row", c.get("row_index", 0))
             col = c.get("column", c.get("column_index", 0))
@@ -275,25 +283,39 @@ class GraphBuilder:
                 row -= 1
             if col > 0:
                 col -= 1
+            rows_seen.add(row)
+            cols_seen.add(col)
+
+            raw_value = c.get("value")
+            str_value = str(raw_value) if raw_value is not None else ""
+            data_type = c.get("data_type", "string")
+            # Preserve original typed value in normalized_value
+            normalized = raw_value if data_type != "string" else None
+
             table_cells.append(TableCell(
                 row_index=row,
                 column_index=col,
-                value=str(c.get("value", "")) if c.get("value") is not None else "",
-                data_type=c.get("data_type", "string"),
+                value=str_value,
+                normalized_value=normalized,
+                data_type=data_type,
                 source_cell_ref=c.get("address"),
             ))
 
+        # Use actual data row/column count, not max index
+        actual_rows = len(rows_seen)
+        actual_cols = len(cols_seen)
+
         return Table(
             sheet_name=sheet_name,
-            row_count=max_row,
-            column_count=max_col,
+            row_count=max(actual_rows, max_row),
+            column_count=max(actual_cols, max_col),
             cells=table_cells,
             confidence=1.0,
             source_parser=parser_name,
         )
 
     def _classify_document(self, result: ParserResult) -> list[DocumentType]:
-        """Simple heuristic document type classification."""
+        """Heuristic document type classification using keyword density and structure."""
         types: list[DocumentType] = []
         all_text = ""
 
@@ -302,27 +324,38 @@ class GraphBuilder:
 
         text_lower = all_text.lower()
 
+        # Minimum keyword hits required for classification
+        min_hits = 2
+
         if result.file_type == FileType.PPTX:
             types.append(DocumentType.PRESENTATION)
         elif result.file_type in (FileType.XLSX, FileType.XLS):
             types.append(DocumentType.SPREADSHEET)
-            if any(
-                kw in text_lower
-                for kw in ["revenue", "ebitda", "forecast", "budget", "p&l", "profit"]
-            ):
+            financial_kw = ["revenue", "ebitda", "forecast", "budget", "p&l", "profit"]
+            hits = sum(1 for kw in financial_kw if kw in text_lower)
+            # Also consider structural signals: presence of formulas
+            has_formulas = any(
+                len(s.get("formulas", [])) > 0 for s in result.sheets
+            )
+            if hits >= min_hits or (hits >= 1 and has_formulas):
                 types.append(DocumentType.FINANCIAL_MODEL)
-        elif result.file_type == FileType.PDF:
-            if any(kw in text_lower for kw in ["invoice", "bill to", "amount due", "total due"]):
-                types.append(DocumentType.INVOICE)
-            if any(
-                kw in text_lower
-                for kw in ["agreement", "contract", "whereas", "parties", "governing law"]
-            ):
-                types.append(DocumentType.CONTRACT)
-            if any(kw in text_lower for kw in ["statement", "account", "balance", "transaction"]):
-                types.append(DocumentType.BANK_STATEMENT)
-            if any(kw in text_lower for kw in ["resume", "curriculum vitae", "experience", "education", "skills"]):
-                types.append(DocumentType.RESUME)
+        elif result.file_type in (FileType.PDF, FileType.DOCX, FileType.RTF):
+            invoice_kw = ["invoice", "bill to", "amount due", "total due"]
+            contract_kw = ["agreement", "contract", "whereas", "parties", "governing law"]
+            bank_kw = ["statement", "account", "balance", "transaction"]
+            resume_kw = ["resume", "curriculum vitae", "experience", "education", "skills"]
+
+            candidates = [
+                (DocumentType.INVOICE, invoice_kw),
+                (DocumentType.CONTRACT, contract_kw),
+                (DocumentType.BANK_STATEMENT, bank_kw),
+                (DocumentType.RESUME, resume_kw),
+            ]
+
+            for doc_type, keywords in candidates:
+                hits = sum(1 for kw in keywords if kw in text_lower)
+                if hits >= min_hits:
+                    types.append(doc_type)
 
         if not types:
             types.append(DocumentType.UNKNOWN)

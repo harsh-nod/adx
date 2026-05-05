@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any
 
@@ -332,7 +332,7 @@ class Extraction(BaseModel):
     fields: list[ExtractionField] = Field(default_factory=list)
     confidence: float = 1.0
     model_used: str | None = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class ValidationResult(BaseModel):
@@ -369,7 +369,7 @@ class Document(BaseModel):
     file_type: FileType = FileType.UNKNOWN
     mime_type: str = ""
     checksum: str = ""
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     source_uri: str | None = None
     page_count: int = 0
     sheet_count: int = 0
