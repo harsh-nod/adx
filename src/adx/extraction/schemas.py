@@ -132,6 +132,40 @@ TABLE_SCHEMA = ExtractionSchema(
 )
 
 
+REGISTER_SPEC_SCHEMA = ExtractionSchema(
+    id="register_spec",
+    name="Register Specification",
+    description="Hardware register specification extraction.",
+    fields=[
+        FieldDef(name="register_name", description="Name of the register"),
+        FieldDef(name="base_address", description="Base address (hex string)"),
+        FieldDef(name="register_width", description="Register width in bits", field_type="integer", required=False),
+        FieldDef(name="description", description="Register description", required=False),
+        FieldDef(
+            name="bit_fields",
+            description="Bit field definitions with name, bits, access, reset value, and description",
+            field_type="array",
+        ),
+    ],
+)
+
+DATA_TABLE_SCHEMA = ExtractionSchema(
+    id="data_table",
+    name="Data Table",
+    description="Structured data table extraction with column type inference.",
+    fields=[
+        FieldDef(name="table_name", description="Name or title of the table", required=False),
+        FieldDef(
+            name="columns",
+            description="Column definitions with name and inferred type",
+            field_type="array",
+        ),
+        FieldDef(name="rows", description="Data rows", field_type="array"),
+        FieldDef(name="row_count", description="Number of data rows", field_type="integer"),
+    ],
+)
+
+
 class SchemaRegistry:
     """Registry of extraction schemas."""
 
@@ -141,6 +175,8 @@ class SchemaRegistry:
             "contract": CONTRACT_SCHEMA,
             "financial_model": FINANCIAL_MODEL_SCHEMA,
             "table": TABLE_SCHEMA,
+            "register_spec": REGISTER_SPEC_SCHEMA,
+            "data_table": DATA_TABLE_SCHEMA,
         }
 
     def get(self, schema_id: str) -> ExtractionSchema | None:

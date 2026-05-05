@@ -2,6 +2,7 @@
 
 __version__ = "0.1.0"
 
+from adx.async_client import AsyncADX
 from adx.client import ADX
 
-__all__ = ["ADX"]
+__all__ = ["ADX", "AsyncADX"]

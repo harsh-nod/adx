@@ -332,6 +332,28 @@ def serve() -> None:
     uvicorn.run("adx.api.app:app", host="0.0.0.0", port=8000, reload=True)
 
 
+@cli.command()
+@click.option("--storage-dir", default=None, help="Storage directory for MCP server.")
+def mcp(storage_dir: str | None) -> None:
+    """Start the MCP server (stdio transport)."""
+    try:
+        from adx.mcp import create_mcp_server
+    except ImportError:
+        console.print("[red]MCP SDK not installed. Run: pip install 'adx[mcp]'[/red]")
+        sys.exit(1)
+
+    import asyncio
+    from mcp.server.stdio import stdio_server
+
+    server = create_mcp_server(storage_dir)
+
+    async def run():
+        async with stdio_server() as (read_stream, write_stream):
+            await server.run(read_stream, write_stream, server.create_initialization_options())
+
+    asyncio.run(run())
+
+
 def main() -> None:
     cli()
 

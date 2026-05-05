@@ -13,6 +13,7 @@ from adx.parsers.excel_adapter import OpenpyxlAdapter
 from adx.parsers.pdf_adapter import PyMuPDFAdapter
 from adx.parsers.pptx_adapter import PptxAdapter
 from adx.parsers.rtf_adapter import RTFAdapter
+from adx.parsers.xls_adapter import XlrdAdapter
 
 logger = logging.getLogger(__name__)
 
@@ -44,6 +45,7 @@ class ParserRegistry:
             DocxAdapter(),
             PptxAdapter(),
             RTFAdapter(),
+            XlrdAdapter(),
         ]
 
     def register(self, adapter: ParserAdapter) -> None:

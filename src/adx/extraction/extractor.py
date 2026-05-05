@@ -49,7 +49,11 @@ class Extractor:
             schema_name=schema.name,
         )
 
-        if graph.document.file_type in (FileType.PDF, FileType.DOCX, FileType.RTF):
+        if schema.id == "register_spec":
+            self._extract_register_spec(graph, extraction)
+        elif schema.id == "data_table":
+            self._extract_data_table(graph, extraction)
+        elif graph.document.file_type in (FileType.PDF, FileType.DOCX, FileType.RTF, FileType.PPTX):
             self._extract_from_pdf(graph, schema, extraction)
         elif graph.document.file_type in (FileType.XLSX, FileType.XLS, FileType.CSV):
             self._extract_from_spreadsheet(graph, schema, extraction)
@@ -277,3 +281,170 @@ class Extractor:
             except ValueError:
                 return value
         return value
+
+    def _extract_register_spec(
+        self,
+        graph: DocumentGraph,
+        extraction: Extraction,
+    ) -> None:
+        """Heuristic extraction for register specification documents."""
+        full_text = graph.get_all_text()
+
+        # Find register name
+        reg_name = None
+        reg_name_match = re.search(
+            r"(?i)(?:register\s*(?:name)?|reg(?:ister)?\s*:)\s*[:\-]?\s*(\S+)",
+            full_text,
+        )
+        if reg_name_match:
+            reg_name = reg_name_match.group(1).strip()
+
+        # Find base address
+        base_addr = None
+        addr_match = re.search(
+            r"(?i)(?:base\s*)?address\s*[:\-]?\s*(0x[0-9A-Fa-f]+|[0-9A-Fa-f]{4,}h?)",
+            full_text,
+        )
+        if addr_match:
+            base_addr = addr_match.group(1).strip()
+
+        # Find register width
+        width = None
+        width_match = re.search(r"(?i)(?:register\s*)?width\s*[:\-]?\s*(\d+)", full_text)
+        if width_match:
+            width = int(width_match.group(1))
+
+        # Find description
+        desc = None
+        desc_match = re.search(r"(?i)description\s*[:\-]\s*(.+?)(?:\n|$)", full_text)
+        if desc_match:
+            desc = desc_match.group(1).strip()
+
+        # Extract bit fields from tables
+        bit_fields: list[dict[str, Any]] = []
+        for table in graph.get_all_tables():
+            headers = [c.value.lower() for c in table.cells if c.row_index == 0]
+            has_bit_cols = any(
+                h in ("bits", "bit", "field", "name", "bit field", "bit range")
+                for h in headers
+            )
+            if has_bit_cols and table.row_count > 1:
+                rows = table.to_rows()
+                header_row = rows[0] if rows else []
+                for data_row in rows[1:]:
+                    field_entry: dict[str, str] = {}
+                    for i, val in enumerate(data_row):
+                        if i < len(header_row):
+                            field_entry[header_row[i].lower()] = val
+                    if field_entry:
+                        bit_fields.append(field_entry)
+
+        fields_data = [
+            ("register_name", reg_name, 0.8 if reg_name else 0.0),
+            ("base_address", base_addr, 0.8 if base_addr else 0.0),
+            ("register_width", width, 0.7 if width else 0.0),
+            ("description", desc, 0.7 if desc else 0.0),
+            ("bit_fields", bit_fields, 0.7 if bit_fields else 0.0),
+        ]
+
+        for name, value, confidence in fields_data:
+            warnings: list[str] = []
+            if value is None and name in ("register_name", "base_address", "bit_fields"):
+                warnings.append(f"Required field '{name}' not found.")
+            extraction.fields.append(ExtractionField(
+                field_path=name,
+                value=value,
+                confidence=confidence,
+                warnings=warnings,
+            ))
+
+    def _extract_data_table(
+        self,
+        graph: DocumentGraph,
+        extraction: Extraction,
+    ) -> None:
+        """Extract structured table data with column type inference."""
+        tables = graph.get_all_tables()
+
+        if not tables:
+            extraction.fields.append(ExtractionField(
+                field_path="table_name", value=None, confidence=0.0,
+                warnings=["No tables found in document."],
+            ))
+            return
+
+        # Use the first/largest table
+        table = max(tables, key=lambda t: t.row_count * t.column_count)
+        rows = table.to_rows()
+        if not rows:
+            return
+
+        header_row = rows[0]
+        data_rows = rows[1:]
+
+        # Infer column types
+        columns: list[dict[str, str]] = []
+        for col_idx, header in enumerate(header_row):
+            col_values = [r[col_idx] for r in data_rows if col_idx < len(r)]
+            col_type = self._infer_column_type(col_values)
+            columns.append({"name": header, "type": col_type})
+
+        table_name = table.title or table.sheet_name or "Table 1"
+        citation = Citation(
+            document_id=graph.document.id,
+            target_object_id=table.id,
+            citation_type=CitationType.TABLE,
+            page_number=table.page_number,
+            sheet_name=table.sheet_name,
+        )
+
+        extraction.fields.extend([
+            ExtractionField(field_path="table_name", value=table_name, confidence=0.9),
+            ExtractionField(
+                field_path="columns", value=columns, confidence=0.9,
+                citations=[citation],
+            ),
+            ExtractionField(
+                field_path="rows", value=data_rows, confidence=0.9,
+                citations=[citation],
+            ),
+            ExtractionField(field_path="row_count", value=len(data_rows), confidence=1.0),
+        ])
+
+    @staticmethod
+    def _infer_column_type(values: list[str]) -> str:
+        """Infer the type of a column from its values."""
+        if not values:
+            return "string"
+
+        num_count = 0
+        int_count = 0
+        date_count = 0
+
+        for v in values:
+            v = v.strip()
+            if not v:
+                continue
+            # Check number
+            cleaned = re.sub(r"[,$%]", "", v)
+            try:
+                float(cleaned)
+                num_count += 1
+                if "." not in cleaned:
+                    int_count += 1
+                continue
+            except ValueError:
+                pass
+            # Check date-like
+            if re.match(r"\d{1,4}[-/]\d{1,2}[-/]\d{1,4}", v):
+                date_count += 1
+
+        non_empty = len([v for v in values if v.strip()])
+        if non_empty == 0:
+            return "string"
+
+        if num_count / non_empty > 0.7:
+            return "integer" if int_count == num_count else "number"
+        if date_count / non_empty > 0.5:
+            return "date"
+        return "string"

@@ -49,6 +49,12 @@ postgres = [
     "asyncpg>=0.29,<1.0",
     "psycopg2-binary>=2.9,<3.0",
 ]
+xls = [
+    "xlrd>=2.0,<3.0",
+]
+mcp = [
+    "mcp>=1.0,<2.0",
+]
 dev = [
     "pytest>=8.0,<9.0",
     "pytest-asyncio>=0.23,<1.0",
